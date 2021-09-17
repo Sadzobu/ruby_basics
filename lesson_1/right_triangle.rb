@@ -10,14 +10,14 @@ end
 
 print "Enter 3 sides of a triangle:"
 sides = gets.chomp.split()
-sides = sides.map(&:to_i)
-unless sides.length == 3
+until sides.length == 3
 	print "Enter 3 sides of a triangle:"
 	sides = gets.chomp.split()
 end
-if (sides[0] == sides[1]) and (sides[1] == sides[2])
+sides = sides.map(&:to_i)
+if sides.uniq.length == 1
 	puts "The triangle is equilateral! (and isosceles by default)"
-elsif (sides[0] == sides[1] and sides[0] != sides[2]) or (sides[0] == sides[2] and sides[0] != sides[1]) or (sides[1] == sides[2] and sides[0] != sides[1])
+elsif sides.uniq.length == 2
 	if triangle_is_right(sides)
 		puts "The triangle is isosceles and right!"
 	else
@@ -26,6 +26,6 @@ elsif (sides[0] == sides[1] and sides[0] != sides[2]) or (sides[0] == sides[2] a
 elsif triangle_is_right(sides)
 	puts "The triangle is right!"
 else
-	puts "That's just and ordinary triangle"
+	puts "That's just an ordinary triangle"
 end
 	
