@@ -1,5 +1,5 @@
 class Route
-  attr_accessor :stations
+  attr_reader :stations
 
   def initialize(start_station, end_station)
     @start_station = start_station
@@ -7,16 +7,16 @@ class Route
     @stations = [start_station, end_station]
   end
 
-  def add_station(name)
-    self.stations.insert(-2, name)
+  def add_station(station)
+    stations.insert(-2, station)
   end
 
-  def del_station(name)
-    self.stations.delete(name)
+  def del_station(station)
+    stations.delete(station)
   end
 
   def show_stations
-    self.stations[...-1].each {|station| print "#{station}->"} 
-    puts self.stations[-1]
+    stations[...-1].each {|station| print "#{station.name}->"} 
+    puts stations[-1].name
   end
 end

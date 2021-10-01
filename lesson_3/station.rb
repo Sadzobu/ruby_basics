@@ -1,20 +1,25 @@
 class Station
-  attr_accessor :trains, :passenger_trains, :cargo_trains
+  attr_reader :trains, :name
 
   def initialize(name)
     @name = name
     @trains = []
-    @passenger_trains = []
-    @cargo_trains =[]
   end
 
   def receive_train(train)
-    self.trains << train
-    self.passenger_trains << train if train.type == 'passenger'
-    self.cargo_trains << train if train.type == 'cargo'
+    trains << train
   end
 
   def send_train(train)
-    self.trains.delete(train)
+    trains.delete(train)
   end
+
+  def passenger_trains()
+    return trains.select {|train| train.type == 'passenger'}
+  end
+
+  def cargo_trains()
+    return trains.select {|train| train.type == 'cargo'}
+  end
+
 end
