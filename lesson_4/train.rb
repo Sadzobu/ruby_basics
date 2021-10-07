@@ -1,5 +1,5 @@
 class Train
-  attr_reader :route, :cars
+  attr_reader :route, :cars, :id
   attr_accessor :speed
 
   def initialize(id)
