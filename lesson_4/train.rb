@@ -7,9 +7,12 @@ class Train
     @cars = []
     @speed = 0
   end
-
+  
   def set_route(route)
     @route = route
+    unless cur_station.nil?
+      cur_station.send_train(self)
+    end
     route.stations[0].receive_train(self)
   end
 
@@ -18,7 +21,7 @@ class Train
   end
 
   def cur_station
-    route.stations.each {|station| return station if station.trains.include?(self)}
+    route.stations.find {|station| station.trains.include?(self)}
   end
 
   def prev_station
@@ -37,7 +40,7 @@ class Train
 
   def goto_prev_station
     ps = prev_station
-    cur_station.send_trasin(self)
+    cur_station.send_train(self)
     ps.receive_train(self)
   end
 
@@ -53,8 +56,9 @@ class Train
     :general
   end
 
-  protected
+  private
 
+  # helper method for this class, is not used in child classes
   def types_match?(car)
     type == car.type
   end

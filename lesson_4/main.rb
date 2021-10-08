@@ -6,32 +6,6 @@ require_relative 'passenger_train.rb'
 require_relative 'station.rb'
 require_relative 'route.rb'
 
-trains = []
-stations = []
-routes = []
-
-
-#test data
-t1 = CargoTrain.new("534")
-t2 = PassengerTrain.new("322")
-
-s1 = Station.new("Domo")
-s2 = Station.new("Avto")
-s3 = Station.new("Kolomna")
-s4 = Station.new("Ramenki")
-
-r1 = Route.new(s1, s2)
-r2 = Route.new(s4,s3)
-r2.add_station(s1)
-r2.add_station(s2)
-
-t1.set_route(r1)
-t2.set_route(r2)
-trains << t1 << t2
-stations << s1 << s2 << s3 << s4
-routes << r1 << r2
-#test data end
-
 while true
   puts "\e[H\e[2J"
   puts "Welcome to RailRoad Control Simulation!"
@@ -141,15 +115,57 @@ while true
         user_input = gets
       when 'D'
         if current_train.type == :cargo
-          current_train.del_car(CargoCar.new())
+          current_train.del_car(current_train.cars.last)
         else
-          current_train.del_car(PassengerCar.new())
+          current_train.del_car(current_train.cars.last)
         end
         puts "Train #{current_train.id} now has #{current_train.cars.length} cars!"
         puts "Press anything to continue:"
         user_input = gets
       end
     when 'S'
+      puts "\e[H\e[2J"
+      puts "Choose a route to modify"
+      routes.each_with_index do |route, i|
+        print "#{i}: "
+        route.show_stations
+      end
+      user_input = gets.chomp.to_i
+      current_route = routes[user_input]
+      puts "\e[H\e[2J"
+      puts "Press 'A', to add station to route"
+      puts "Press 'D', to remove station from route"
+      user_input = gets.chomp
+      case user_input 
+      when 'A'
+        puts "\e[H\e[2J"
+        puts "Enter name of the station:"
+        user_input = gets.chomp
+        new_station = stations.find {|station| station.name == user_input}
+        if new_station.nil?
+          puts "This station does not exist, can't add it to route"
+          puts "Press anything to continue:"
+          user_input = gets
+          next
+        end
+        current_route.add_station(new_station)
+        puts "Succesfully added station! Route now looks like this:"
+        current_route.show_stations
+      when 'D'
+        puts "\e[H\e[2J"
+        puts "Enter name of the station:"
+        user_input = gets.chomp
+        new_station = stations.find {|station| station.name == user_input}
+        if new_station.nil?
+          puts "This station does not exist, can't remove it from route"
+          puts "Press anything to continue:"
+          user_input = gets
+          next
+        end
+        current_route.del_station(new_station)
+        puts "Succesfully removed station! Route now looks like this:"
+        current_route.show_stations
+      end
     when 'M'
       puts "\e[H\e[2J"
       puts "Enter train number:"
@@ -161,16 +177,29 @@ while true
         user_input = gets
         next
       end
-      puts "Choose a route for the train:"
-      routes.each_with_index do |route, i|
-        print "#{i}: "
-        route.show_stations
+      puts "Press N, to send train to the next station, on current route"
+      puts "Press P, to send train to the previous station, on current route"
+      puts "Press C, to change train's current route"
+      user_input = gets.chomp
+      case user_input
+      when 'N'
+        current_train.goto_next_station
+        puts "Train #{current_train.id} is now on \'#{current_train.cur_station.name}\'"
+      when 'P'
+        current_train.goto_prev_station
+        puts "Train #{current_train.id} is now on \'#{current_train.cur_station.name}\'"
+      when 'C'
+        puts "Choose a route for the train:"
+        routes.each_with_index do |route, i|
+          print "#{i}: "
+          route.show_stations
+        end
+        user_input = gets.chomp.to_i
+        current_train.set_route(routes[user_input])
+        puts "Train #{current_train.id} is now on route #{user_input.to_s}!"
+        puts "Press anything to continue:"
+        user_input = gets
       end
-      user_input = gets.chomp.to_i
-      current_train.set_route(routes[user_input])
-      puts "Train #{current_train.id} is now on route #{user_input.to_s}!"
-      puts "Press anything to continue:"
-      user_input = gets
     end
   when 'S'
     puts "\e[H\e[2J"
