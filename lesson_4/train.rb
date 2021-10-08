@@ -10,8 +10,8 @@ class Train
   
   def set_route(route)
     @route = route
-    unless cur_station.nil?
-      cur_station.send_train(self)
+    unless current_station.nil?
+      current_station.send_train(self)
     end
     route.stations[0].receive_train(self)
   end
@@ -20,35 +20,35 @@ class Train
     self.speed = 0
   end
 
-  def cur_station
+  def current_station
     route.stations.find {|station| station.trains.include?(self)}
   end
 
-  def prev_station
-    route.stations[route.stations.find_index(cur_station) - 1]
+  def previous_station
+    route.stations[route.stations.find_index(current_station) - 1]
   end
 
   def next_station
-    route.stations[route.stations.find_index(cur_station) + 1]
+    route.stations[route.stations.find_index(current_station) + 1]
   end
 
-  def goto_next_station
-    ns = next_station
-    cur_station.send_train(self)
-    ns.receive_train(self)
+  def go_to_next_station
+    next_stop = next_station
+    current_station.send_train(self)
+    next_stop.receive_train(self)
   end
 
-  def goto_prev_station
-    ps = prev_station
-    cur_station.send_train(self)
-    ps.receive_train(self)
+  def go_to_previous_station
+    next_stop = previous_station
+    current_station.send_train(self)
+    next_stop.receive_train(self)
   end
 
   def add_car(car)
     cars.append(car) if (types_match?(car) and speed.zero?)
   end
 
-  def del_car(car)
+  def delete_car(car)
     cars.delete(car) if speed.zero?
   end
 
@@ -58,7 +58,7 @@ class Train
 
   private
 
-  # helper method for this class, is not used in child classes
+  # helper method for this class, it is not used in child classes
   def types_match?(car)
     type == car.type
   end

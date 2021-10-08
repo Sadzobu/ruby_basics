@@ -6,6 +6,10 @@ require_relative 'passenger_train.rb'
 require_relative 'station.rb'
 require_relative 'route.rb'
 
+trains = []
+stations = []
+routes = []
+
 while true
   puts "\e[H\e[2J"
   puts "Welcome to RailRoad Control Simulation!"
@@ -115,9 +119,9 @@ while true
         user_input = gets
       when 'D'
         if current_train.type == :cargo
-          current_train.del_car(current_train.cars.last)
+          current_train.delete_car(current_train.cars.last)
         else
-          current_train.del_car(current_train.cars.last)
+          current_train.delete_car(current_train.cars.last)
         end
         puts "Train #{current_train.id} now has #{current_train.cars.length} cars!"
         puts "Press anything to continue:"
@@ -162,7 +166,7 @@ while true
           user_input = gets
           next
         end
-        current_route.del_station(new_station)
+        current_route.delete_station(new_station)
         puts "Succesfully removed station! Route now looks like this:"
         current_route.show_stations
       end
@@ -183,11 +187,15 @@ while true
       user_input = gets.chomp
       case user_input
       when 'N'
-        current_train.goto_next_station
-        puts "Train #{current_train.id} is now on \'#{current_train.cur_station.name}\'"
+        current_train.go_to_next_station
+        puts "Train #{current_train.id} is now on \'#{current_train.current_station.name}\'"
+        puts "Press anything to continue:"
+        user_input = gets
       when 'P'
-        current_train.goto_prev_station
-        puts "Train #{current_train.id} is now on \'#{current_train.cur_station.name}\'"
+        current_train.go_to_previous_station
+        puts "Train #{current_train.id} is now on \'#{current_train.current_station.name}\'"
+        puts "Press anything to continue:"
+        user_input = gets
       when 'C'
         puts "Choose a route for the train:"
         routes.each_with_index do |route, i|
