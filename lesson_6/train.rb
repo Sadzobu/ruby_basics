@@ -83,13 +83,20 @@ class Train
     raise "Train must have a number" if id.nil?
     raise "Train number must be 5 or 6 symbols" unless id.length.between?(5,6)
     raise "Wrong format for train number" if id !~ ID_PATTERN
+    raise "Speed must be a number" unless is_number?(speed)
+    raise "Speed must be a positive number" if speed.to_f.negative?
   end
 
   private
 
-  # helper method for this class, it is not used in child classes
+  # helper methods for this class, they are not used in child classes
   def types_match?(car)
     type == car.type
   end
 
+  def is_number?(string)
+    true if Float(string)
+  rescue
+    false
+  end
 end
