@@ -1,5 +1,6 @@
 require_relative 'manufacturing_company.rb'
 require_relative 'instance_counter.rb'
+require_relative 'validation.rb'
 require_relative 'cargo_car.rb'
 require_relative 'passenger_car.rb'
 require_relative 'train.rb'

@@ -1,6 +1,7 @@
 class Train
   include ManufacturingCompany
   include InstanceCounter
+  include Validation
 
   attr_reader :route, :cars, :id
   attr_accessor :speed
@@ -13,20 +14,13 @@ class Train
     @id = id
     @cars = []
     @speed = 0
-    @@trains[id] = self
     validate!
+    @@trains[id] = self
     register_instance
   end
 
   def self.find(id)
     @@trains[id]
-  end
-
-  def valid?
-    validate!
-    true
-  rescue
-    false
   end
   
   def set_route(route)
@@ -80,11 +74,13 @@ class Train
   protected
 
   def validate!
-    raise "Train must have a number" if id.nil?
-    raise "Train number must be 5 or 6 symbols" unless id.length.between?(5,6)
-    raise "Wrong format for train number" if id !~ ID_PATTERN
-    raise "Speed must be a number" unless is_number?(speed)
-    raise "Speed must be a positive number" if speed.to_f.negative?
+    errors = []
+    errors << "Train must have a number" if id.nil?
+    errors << "Train number must be 5 or 6 symbols" unless id.length.between?(5,6)
+    errors << "Wrong format for train number" if id !~ ID_PATTERN
+    errors << "Speed must be a number" unless is_number?(speed)
+    errors << "Speed must be a positive number" if speed.to_f.negative?
+    raise errors.join("...") unless errors.empty?
   end
 
   private
