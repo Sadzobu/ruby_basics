@@ -16,22 +16,22 @@ def main
   routes = []
 
   #test data
-  #t1 = CargoTrain.new('12345')
-  #t2 = PassengerTrain.new('paa-ar')
-  #s1 = Station.new('Artoe')
-  #s2 = Station.new('Parara')
-  #w1 = CargoCar.new(12)
-  #w2 = CargoCar.new(14)
-  #w3 = PassengerCar.new(100)
-  #r1 = Route.new(s1, s2)
-  #r2 = Route.new(s2, s1)
-  #t1.add_car(w1)
-  #t1.add_car(w2)
-  #t2.add_car(w3)
-  #t1.set_route(r1)
-  #t2.set_route(r1)
-  #trains << t1 << t2
-  #stations << s1 << s2
+  t1 = CargoTrain.new('12345')
+  t2 = PassengerTrain.new('paa-ar')
+  s1 = Station.new('Artoe')
+  s2 = Station.new('Parara')
+  w1 = CargoCar.new(12)
+  w2 = CargoCar.new(14)
+  w3 = PassengerCar.new(100)
+  r1 = Route.new(s1, s2)
+  r2 = Route.new(s2, s1)
+  t1.add_car(w1)
+  t1.add_car(w2)
+  t2.add_car(w3)
+  t1.set_route(r1)
+  t2.set_route(r1)
+  trains << t1 << t2
+  stations << s1 << s2
 
   while true
     puts "\e[H\e[2J"
@@ -140,7 +140,7 @@ def main
         elsif current_car.type == :cargo
           puts "Enter amount of units of volume to occupy:"
           user_input = gets.chomp
-          current_car.occupy(user_input)
+          current_car.occupy(user_input.to_i)
           puts "This car now has #{current_car.occupied_volume} units of occupied volume and #{current_car.available_volume} units of available volume left"
         end
         puts "Press anything to continue:"
@@ -318,8 +318,6 @@ def main
     end
   end
 end
-
-private
 
 def show_trains_and_cars(trains)
   puts "\e[H\e[2J"
