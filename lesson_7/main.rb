@@ -2,6 +2,7 @@ require_relative 'manufacturing_company.rb'
 require_relative 'instance_counter.rb'
 require_relative 'pass_block.rb'
 require_relative 'validation.rb'
+require_relative 'car.rb'
 require_relative 'cargo_car.rb'
 require_relative 'passenger_car.rb'
 require_relative 'train.rb'
@@ -30,6 +31,7 @@ def main
   t2.add_car(w3)
   t1.set_route(r1)
   t2.set_route(r1)
+  routes << r1 << r2
   trains << t1 << t2
   stations << s1 << s2
 
@@ -136,12 +138,12 @@ def main
         current_car = current_train.cars[user_input.to_i-1]
         if current_car.type == :passenger
           current_car.occupy()
-          puts "This car now has #{current_car.occupied_seats} occupied seats and #{current_car.vacant_seats} vacant seats left"
+          puts "This car now has #{current_car.occupied_space} occupied seats and #{current_car.available_space} vacant seats left"
         elsif current_car.type == :cargo
           puts "Enter amount of units of volume to occupy:"
           user_input = gets.chomp
           current_car.occupy(user_input.to_i)
-          puts "This car now has #{current_car.occupied_volume} units of occupied volume and #{current_car.available_volume} units of available volume left"
+          puts "This car now has #{current_car.occupied_space} units of occupied volume and #{current_car.available_space} units of available volume left"
         end
         puts "Press anything to continue:"
         user_input = gets
@@ -330,12 +332,12 @@ def show_trains_and_cars(trains)
   if current_train.type == :passenger
     current_train.pass_block (current_train.cars) do |x|
       car_counter += 1
-      puts "Car #{car_counter} has a #{x.type.to_s} type and has #{x.occupied_seats} occupied seats and #{x.vacant_seats} vacant seats left"
+      puts "Car #{car_counter} has a #{x.type.to_s} type and has #{x.occupied_space} occupied seats and #{x.available_space} vacant seats left"
     end
   elsif current_train.type == :cargo
     current_train.pass_block (current_train.cars) do |x|
       car_counter += 1
-      puts "Car #{car_counter} has a #{x.type.to_s} type and has #{x.occupied_volume} units of occupied volume and #{x.available_volume} units of available volume left"
+      puts "Car #{car_counter} has a #{x.type.to_s} type and has #{x.occupied_space} units of occupied volume and #{x.available_space} units of available volume left"
     end
   end
   current_train

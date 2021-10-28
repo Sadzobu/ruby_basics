@@ -1,24 +1,11 @@
-class CargoCar
-  include ManufacturingCompany
+require_relative 'car.rb'
 
-  attr_reader :type, :occupied_volume
+class CargoCar < Car
+  def occupy(space)
+    self.occupied_space += space
+  end
 
-  def initialize(volume)
+  def type
     @type = :cargo
-    @volume = volume
-    @occupied_volume = 0
   end
-
-  def occupy(volume)
-    self.occupied_volume += volume
-  end
-
-  def available_volume
-    self.volume - self.occupied_volume
-  end
-
-  private
-
-  attr_reader :volume
-  attr_writer :occupied_volume
 end
