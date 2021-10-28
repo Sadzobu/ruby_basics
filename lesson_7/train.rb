@@ -72,6 +72,10 @@ class Train
     :general
   end
 
+  def each_car(&block)
+    self.pass_block(cars, &block)
+  end
+
   protected
 
   def validate!

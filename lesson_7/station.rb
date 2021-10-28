@@ -42,6 +42,10 @@ class Station
     return trains.select {|train| train.type == :cargo}
   end
 
+  def each_train(&block)
+    self.pass_block(trains, &block)
+  end
+
   protected
 
   def validate!
