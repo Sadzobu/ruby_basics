@@ -1,0 +1,8 @@
+AllCops:
+  Exclude:
+    - 'main.rb'
+  NewCops: enable
+
+
+Style/Documentation:
+  Enabled: false
