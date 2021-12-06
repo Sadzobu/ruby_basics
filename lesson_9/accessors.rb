@@ -3,7 +3,6 @@
 module Accessors
   def self.included(base)
     base.extend ClassMethods
-    base.include InstanceMethods
   end
 
   module ClassMethods
@@ -30,9 +29,5 @@ module Accessors
         instance_variable_set(var_name, value)
       end
     end
-  end
-
-  module InstanceMethods
-    # attr_name_history meta module
   end
 end
